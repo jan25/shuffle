@@ -4,11 +4,11 @@
  * placed throughout the list.
  * 
  * @param list List to shuffle.
- * @param grouper Function to identify grouping criteria in each element.
+ * @param grouper Function to identify grouping criteria for each element.
  * @returns New shuffled list.
  */
 export const shuffle = <T>(list: Array<T>,
-    grouper: (element: T) => any = (e: T) => 0): Array<T> => {
+    grouper: (element: T) => any = (_) => 0): Array<T> => {
 
     // Logically group elements
     const groups = new Map<any, Array<T>>();
@@ -24,11 +24,11 @@ export const shuffle = <T>(list: Array<T>,
 
     // Distribute groups amoung columns
     const columnShuffled: Array<Array<T>> = [];
-    for (let idx = 0; idx < list.length; ++idx) columnShuffled.push([]);
+    for (let count = 0; count < list.length; ++count) columnShuffled.push([]);
         
     groups.forEach((group: Array<T>) => {
         fisherYates(group);
-        const partition = list.length / group.length;
+        const partition = Math.floor(list.length / group.length);
         const offset = randInt(0, Math.floor(partition));
         let idx = offset;
         for (let count = 0; count < group.length; ++count) {
@@ -66,7 +66,7 @@ export const shuffle = <T>(list: Array<T>,
  */
 const fisherYates = (list: Array<any>): void => {
     for (let idx = 0; idx < list.length; ++idx) {
-        let swapIdx = randInt(idx, list.length);
+        let swapIdx = randInt(idx, list.length - 1);
         [list[idx], list[swapIdx]] = [list[swapIdx], list[idx]];
     }
 }
